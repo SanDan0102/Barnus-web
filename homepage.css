@@ -2,187 +2,167 @@
     font-family:'myFont';
     src: url('Supreme_Complete/Fonts/WEB/fonts/Supreme-Regular.woff2') format('woff2'),
 }
-body{
+
+/* =============================================
+   BASE / RESET
+   ============================================= */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
     margin: 0;
     background-color: #efefef;
     font-family: 'myFont';
 }
-#standingpic {
+
+
+/* =============================================
+   HOME PAGE — home.html
+   Two-column grid: [sidebar ~27%] [photo ~73%]
+   ============================================= */
+
+/* The full-bleed landscape photo (right column) */
+#layingContent {
     position: fixed;
-    border: solid #efefef 10px;
-    bottom: 0;
-    left: 50%;
-    width: 95%;
-    transform: translateX(-50%);
-    opacity: 1;
-    transition: opacity 2000ms ease;
-}
-#layingpic{
-    width:73.2%;
-    box-sizing: border-box;
-    float: right;
-    border: 10px solid #efefef; 
-    opacity: 1;
-    transition: opacity 2000ms ease;
+    inset: 0 0 0 26.8%;          /* fills the right 73.2% of the viewport */
+    z-index: 0;
 }
 
-#headline{
-    box-sizing: border-box;
-    float: left;
-    width: 26.8%;
+#layingpic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 10px solid #efefef;
+    opacity: 1;
+    transition: opacity 2000ms ease;
+    display: block;
+}
+
+/* Left sidebar: headline + menu + portrait photo */
+#portraitContent {
+    position: fixed;
+    inset: 0 73.2% 0 0;          /* left 26.8% column */
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+}
+
+/* margin-top/bottom match the backButton spacing on fotoim/rolam
+   so the menu sits at the same vertical position on every page.
+   margin-bottom subtracts ~36px because the headline is taller than the backButton */
+#headline {
+    width: 100%;
     text-align: center;
-    margin-left: 0%;
-    margin-top: 6%;
-    margin-bottom: 4%;
-}
-#headline h1{
-    font-size: 40px;
-    color: #444a35;
-}
-#headline p{
-    font-size: 28px;
-    color: #444a35;
+    padding: 0 8px;
+    margin-top: 33.1%;
+    margin-bottom: calc(26.7% - 36px);
 }
 
-@media (orientation: portrait) {
-    #headline {
-        float: none;
-        width: 100%;
-        line-height: 1;
-    }
-    #headline h1 {
-        margin-bottom: 10px;
-        font-size: 35px;
-    }
-    #headline p {
-        margin-top: 0;
-        font-size: 27px;
-    }
+#headline h1 {
+    font-size: clamp(24px, 3vw, 40px);
+    color: #444a35;
+    margin: 0 0 8px;
 }
 
-@media (orientation: portrait) and (min-width: 768px) {
-    #headline {
-        margin-bottom: -3%;
-    }
+#headline p {
+    font-size: clamp(18px, 2.2vw, 28px);
+    color: #444a35;
+    margin: 0;
 }
-#menu{
-    float: left;
-    width: 26.8%;
-    font-size: 25px;
+
+#menu {
+    width: 100%;
+    font-size: clamp(16px, 1.8vw, 25px);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 12px;
-    margin-top: 0%;
-
+    padding: 0 8px;
 }
-#menu a{
+
+#menu a {
     color: #444a35;
     text-decoration: none;
     margin: 7px;
-
 }
 
-
-@media (orientation: portrait) {
-    #portraitContent {
-        position: fixed;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        z-index: 1;
-    }
-
-    #standingpic {
-        position: static;
-        left: auto;
-        bottom: auto;
-        display: block;
-        width: 100%;
-        max-width: 530px;
-        margin: 0 auto;
-        transform: none;
-        box-sizing: border-box;
-        border: 10px solid #efefef;
-    }
-
-    #menu {
-        position: static;
-        float: none;
-        width: 100%;
-        font-size: 20px;
-        box-sizing: border-box;
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 14px 20px;
-        padding: 0 5%;
-        border-left: 10px solid #efefef;
-        border-right: 10px solid #efefef;
-        margin-bottom: 3%;
-        margin-top: 5%;
-    }
-
-    #menu a {
-        margin: 0;
-        text-align: center;
-    }
-}
-.picture-fade-overlay {
-    position: fixed;
-    z-index: 2;
-    box-sizing: border-box;
+/* Standing portrait photo pinned to the bottom of the sidebar */
+#standingpic {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     border: 10px solid #efefef;
-    pointer-events: none;
+    display: block;
     opacity: 1;
-    object-fit: fill;
     transition: opacity 2000ms ease;
+}
+
+
+/* =============================================
+   FOTOIM + ROLAM PAGES — shared two-col grid
+   [sidebar ~27%] [content ~73%]
+   ============================================= */
+
+body:has(#leftcontainer) {
+    display: grid;
+    grid-template-columns: 26.8fr 73.2fr;
+    grid-template-rows: 1fr;
+    min-height: 100vh;
 }
 
 #leftcontainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 26.8%;
-    float: left;
+    min-height: 100vh;
+    padding-top: 0;
 }
 
 #leftcontainer #backButton {
-    float: none;
-    width: 25%;
-    margin-left: 0;
-    font-size: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: clamp(28px, 3vw, 40px);
+    color: #444a35;
     margin-top: 33.1%;
     margin-bottom: 26.7%;
-    color: #444a35;
+    padding: 0;
 }
 
 #leftcontainer #menu {
-    float: none;
     width: 100%;
+    font-size: clamp(16px, 1.6vw, 25px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 0 8px;
 }
 
+/* =============================================
+   FOTOIM — picture display
+   ============================================= */
+
 #pictureDisplay {
-    box-sizing: border-box;
-    float: right;
     display: flex;
     gap: 16px;
-    width: 73.2%;
+    align-self: start;
     margin-top: 8vh;
     height: 85vh;
-    padding: 10px;
-    padding-left: 0px;
+    padding: 10px 10px 10px 0;
     overflow-x: scroll;
     overflow-y: hidden;
     cursor: grab;
     touch-action: pan-x;
     background-color: #efefef;
     scrollbar-color: #444a35 #efefef;
-    scrollbar-width:auto;
+    scrollbar-width: auto;
 }
+
 #pictureDisplay.is-dragging {
     cursor: grabbing;
     user-select: none;
@@ -195,39 +175,156 @@ body{
     object-fit: contain;
 }
 
-@media (orientation: portrait) {
-    #leftcontainer {
-        width: 100%;
-        margin-top: 0;
-        float: none;
+/* =============================================
+   ROLAM — about page content
+   ============================================= */
+
+#bemutatkozas {
+    align-self: start;
+    width: 82.5%;            /* ~60.2% of full page → 60.2/73.2 ≈ 82.5% of the column */
+    text-align: justify;
+    margin-top: 7%;
+    margin-right: 13%;       /* keeps the original visual offset */
+    padding: 30px;
+}
+
+#bemutatkozas p {
+    font-size: clamp(18px, 1.8vw, 25px);
+    color: #444a35;
+    margin-top: 0;
+}
+
+#bemutatkozas img {
+    width: 33%;
+    float: right;
+    margin-left: 55px;
+    margin-bottom: 20px;
+}
+
+
+/* =============================================
+   FADE OVERLAY (JS-injected clone)
+   ============================================= */
+.picture-fade-overlay {
+    position: fixed;
+    z-index: 2;
+    border: 10px solid #efefef;
+    pointer-events: none;
+    opacity: 1;
+    object-fit: fill;
+    transition: opacity 2000ms ease;
+}
+
+
+/* =============================================
+   COPYRIGHT NOTICE
+   ============================================= */
+#copyright {
+    position: fixed;
+    bottom: 10px;
+    left: 14px;
+    font-size: 11px;
+    color: #444a35;
+    opacity: 0.5;
+    z-index: 10;
+    pointer-events: none;
+    user-select: none;
+}
+
+
+/* =============================================
+   RESPONSIVE — TABLET  (portrait, ≥ 768px)
+   ============================================= */
+@media (orientation: portrait) and (min-width: 768px) {
+
+    /* HOME — lock to viewport, no scroll */
+    #layingContent { display: none; }
+
+    body:not(:has(#leftcontainer)) {
+        overflow: hidden;
+        height: 100dvh;
     }
 
-    #leftcontainer #backButton {
-        width: 20%;
-        font-size: 30px;
-        margin-top: 7%;
-        margin-bottom: 3%;
-    }
-
-    #leftcontainer #menu {
+    #portraitContent {
         position: static;
-        float: none;
+        inset: auto;
         width: 100%;
-        font-size: 20px;
-        box-sizing: border-box;
+        height: 100dvh;
+        overflow: hidden;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #headline {
+        line-height: 1;
+        margin-top: 12%;
+        margin-bottom: 0;
+        padding: 0 12px;
+    }
+    #headline h1  { font-size: 35px; margin-bottom: 10px; }
+    #headline p   { font-size: 27px; margin-top: 0; }
+
+    #menu {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(3, 1fr);
         gap: 14px 20px;
+        font-size: 20px;
         padding: 0 5%;
         border-left: 10px solid #efefef;
         border-right: 10px solid #efefef;
-        margin-bottom: 3%;
         margin-top: 5%;
+        margin-bottom: 3%;
+        width: 100%;
+    }
+    #menu a { margin: 0; text-align: center; }
+
+    /* standingpic fills all remaining space — side to side, no scroll */
+    #standingpic {
+        position: static;
+        bottom: auto;
+        left: auto;
+        flex: 1 1 0;
+        min-height: 0;
+        width: 100%;
+        max-width: none;
+        object-fit: cover;
+        border: 10px solid #efefef;
+        box-sizing: border-box;
     }
 
+    /* FOTOIM + ROLAM */
+    body:has(#leftcontainer) {
+        display: block;
+    }
+
+    #leftcontainer {
+        width: 100%;
+        min-height: auto;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #leftcontainer #backButton {
+        font-size: 30px;
+        margin-top: 7%;
+        margin-bottom: 3%;
+        width: auto;
+    }
+
+    #leftcontainer #menu {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px 20px;
+        font-size: 20px;
+        padding: 0 5%;
+        border-left: 10px solid #efefef;
+        border-right: 10px solid #efefef;
+        margin-top: 5%;
+        margin-bottom: 3%;
+    }
+
+    /* Fotoim portrait: stack photos vertically */
     #pictureDisplay {
-        float: none;
-        display: flex;
         flex-direction: column;
         width: 100%;
         height: auto;
@@ -238,7 +335,7 @@ body{
         touch-action: auto;
         scrollbar-width: none;
     }
-
+    #pictureDisplay::-webkit-scrollbar { display: none; }
     #pictureDisplay img {
         flex: none;
         width: 100%;
@@ -246,39 +343,15 @@ body{
         object-fit: contain;
     }
 
-    #pictureDisplay::-webkit-scrollbar {
-        display: none;
-    }
-}
-#bemutatkozas{
-    box-sizing: border-box;
-    width: 60.2%;
-    float: right;
-    text-align:justify;
-    margin-right: 13%;
-    margin-top: 7%;
-    padding: 30px;
-}
-#bemutatkozas p{
-    font-size: 25px;
-    color: #444a35;
-    margin-top: 0;
-}
-#bemutatkozas img{
-    width: 33%;
-    float: right;
-    margin-left: 55px;
-    margin-bottom: 20px;
-}
-@media (orientation: portrait) {
-    #bemutatkozas{
+    /* Rolam portrait */
+    #bemutatkozas {
         width: 100%;
-        float: none;
         margin-right: 0;
         margin-top: 5%;
         padding: 20px;
     }
-    #bemutatkozas img{
+    #bemutatkozas p   { text-align: left; }
+    #bemutatkozas img {
         width: 50%;
         float: none;
         display: block;
@@ -286,12 +359,154 @@ body{
         margin-right: auto;
         margin-bottom: 20px;
     }
-    #bemutatkozas p{
-        text-align: left;
+}
+
+
+/* =============================================
+   RESPONSIVE — MOBILE PHONE  (portrait, < 768px)
+   ============================================= */
+@media (orientation: portrait) and (max-width: 767px) {
+
+    /* HOME — lock to viewport, no scroll */
+    #layingContent { display: none; }
+
+    body:not(:has(#leftcontainer)) {
+        overflow: hidden;
+        height: 100dvh;
+    }
+
+    #portraitContent {
+        position: static;
+        inset: auto;
+        width: 100%;
+        height: 100dvh;
+        overflow: hidden;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #headline {
+        line-height: 1;
+        margin-top: 14%;
+        margin-bottom: 6%;
+        padding: 0 12px;
+    }
+    #headline h1  { font-size: 30px; margin-bottom: 8px; }
+    #headline p   { font-size: 22px; margin-top: 0; }
+
+    #menu {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px 16px;
+        font-size: 18px;
+        padding: 0 5%;
+        border-left: 10px solid #efefef;
+        border-right: 10px solid #efefef;
+        margin-top: 0;
+        margin-bottom: 3%;
+        width: 100%;
+    }
+    #menu a { margin: 0; text-align: center; }
+
+    /* standingpic fills all remaining space — side to side, no scroll */
+    #standingpic {
+        position: static;
+        bottom: auto;
+        left: auto;
+        flex: 1 1 0;
+        min-height: 0;
+        width: 100%;
+        max-width: none;
+        object-fit: cover;
+        border: 10px solid #efefef;
+        box-sizing: border-box;
+    }
+
+    /* FOTOIM + ROLAM */
+    body:has(#leftcontainer) {
+        display: block;
+    }
+
+    #leftcontainer {
+        width: 100%;
+        min-height: auto;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #leftcontainer #backButton {
+        font-size: 26px;
+        margin-top: 7%;
+        margin-bottom: 3%;
+        width: auto;
+    }
+
+    #leftcontainer #menu {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px 16px;
+        font-size: 18px;
+        padding: 0 5%;
+        border-left: 10px solid #efefef;
+        border-right: 10px solid #efefef;
+        margin-top: 5%;
+        margin-bottom: 3%;
+    }
+
+    #pictureDisplay {
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        margin-top: 5%;
+        padding: 0;
+        overflow: visible;
+        cursor: default;
+        touch-action: auto;
+        scrollbar-width: none;
+    }
+    #pictureDisplay::-webkit-scrollbar { display: none; }
+    #pictureDisplay img {
+        flex: none;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+
+    #bemutatkozas {
+        width: 100%;
+        margin-right: 0;
+        margin-top: 5%;
+        padding: 16px;
+    }
+    #bemutatkozas p   { font-size: 17px; text-align: left; }
+    #bemutatkozas img {
+        width: 70%;
+        float: none;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 20px;
     }
 }
+
+
+/* =============================================
+   RESPONSIVE — SMALL LANDSCAPE (phones rotated)
+   ============================================= */
+@media (orientation: landscape) and (max-height: 500px) {
+    #headline h1  { font-size: 22px; }
+    #headline p   { font-size: 18px; }
+    #menu         { font-size: 15px; gap: 6px; }
+
+    #leftcontainer #backButton { margin-top: 12%; margin-bottom: 10%; }
+
+    #bemutatkozas p { font-size: 16px; }
+}
+
+
+/* =============================================
+   RESPONSIVE — MEDIUM LANDSCAPE (laptops/desktops ≤ 1440px)
+   ============================================= */
 @media (orientation: landscape) and (max-width: 1440px) {
-    #bemutatkozas p{
-        font-size: 21px;
-    }
+    #bemutatkozas p { font-size: 21px; }
 }
