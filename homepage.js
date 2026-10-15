@@ -62,16 +62,23 @@ function changePicture(pictureElement, pictures) {
     const pictureBounds = pictureElement.getBoundingClientRect();
     const nextImage = new Image();
 
+    pictureElement.style.border = "10px solid #efefef";
+    pictureElement.style.borderLeft = "0";
+
     oldPicture.removeAttribute("id");
     oldPicture.className = "picture-fade-overlay";
     oldPicture.style.left = `${pictureBounds.left}px`;
     oldPicture.style.top = `${pictureBounds.top}px`;
     oldPicture.style.width = `${pictureBounds.width}px`;
     oldPicture.style.height = `${pictureBounds.height}px`;
+    oldPicture.style.border = "10px solid #efefef";
+    oldPicture.style.borderLeft = "0";
     document.body.appendChild(oldPicture);
 
     nextImage.onload = () => {
         pictureElement.src = nextPicture;
+        pictureElement.style.border = "10px solid #efefef";
+        pictureElement.style.borderLeft = "0";
         pictureElement.style.opacity = "1";
         oldPicture.style.opacity = "0";
 
